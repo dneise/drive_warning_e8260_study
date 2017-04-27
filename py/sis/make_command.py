@@ -214,6 +214,36 @@ def read(type_, set_, number):
     return b
 
 
+def write(type_, set_, number, value, size=2):
+    sender_address = 100
+    receiver_address = 128
+
+    b = bytearray()
+    b += telegram_header_static(
+        sender_address=sender_address,
+        receiver_address=receiver_address,
+        service_name='Parameter lesen',
+    )
+
+    b += payload_head(
+        type_=type_,
+        set_=set_,
+        number=number,
+        receiver_address=receiver_address,
+        eac='value',
+    )
+
+    if size == 2:
+        b += bytearray(struct.pack('<h', value))
+    elif size == 4:
+        b += bytearray(struct.pack('<i', value))
+
+    b = fill_length_into_static_telegram_header(b)
+    b = fill_checksum_into_static_telegram_header(b)
+
+    return b
+
+
 def check_response(r):
     # example b'\x022\x05\x05\x10\x10\x80d\x00<\x80\x02\x00'
     assert sum(r) % 256 == 0

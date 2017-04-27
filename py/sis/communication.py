@@ -60,3 +60,20 @@ class IndraDrive:
             num = None
 
         return num, result
+
+    def write(self, value, type_, set_=None, number=None, size=2):
+        if set_ is None or number is None:
+            type_, set_, number = cmd.type_set_number_from_string(type_)
+
+        b = cmd.write(type_, set_, number, value, size)
+
+        self.serial.write(b)
+        self.serial.flush()
+
+        result = self.serial.read(self.serial.inWaiting())
+
+        cmd.check_response(result)
+        print('status:', cmd.get_status(result))
+        print('service:', cmd.get_service(result))
+
+        return result
