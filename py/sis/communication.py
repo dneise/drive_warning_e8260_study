@@ -70,6 +70,7 @@ class IndraDrive:
         self.serial.write(b)
         self.serial.flush()
 
+        time.sleep(1)
         result = self.serial.read(self.serial.inWaiting())
 
         cmd.check_response(result)
