@@ -181,3 +181,17 @@ class IndraDrive:
     def osci_internal_trigger(self, v):
         return self.write(v, 'P-0-0037')
 
+
+    def read_list(self, type_, set_=None, number=None):
+        if set_ is None or number is None:
+            p_desc = cmd.type_set_number_from_string(type_)
+
+        b = cmd.read_list(*p_desc)
+
+        self.serial.write(b)
+        self.serial.flush()
+
+        time.sleep(2)
+        result = self.serial.read(self.serial.inWaiting())
+
+        return result

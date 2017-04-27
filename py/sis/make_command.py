@@ -258,6 +258,34 @@ def read(type_, set_, number):
     return b
 
 
+def read_list(type_, set_, number, offset, length):
+    sender_address = 100
+    receiver_address = 128
+
+    b = bytearray()
+    b += telegram_header_static(
+        sender_address=sender_address,
+        receiver_address=receiver_address,
+        service_name='Listensegment lesen',
+    )
+
+    b += payload_head(
+        type_=type_,
+        set_=set_,
+        number=number,
+        receiver_address=receiver_address,
+        eac='value',
+    )
+
+    b += bytearray([offset, length])
+
+    b = fill_length_into_static_telegram_header(b)
+    b = fill_checksum_into_static_telegram_header(b)
+
+    return b
+
+
+
 def write(type_, set_, number, value, size=2):
     sender_address = 100
     receiver_address = 128
