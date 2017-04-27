@@ -88,3 +88,73 @@ class IndraDrive:
             print('fehlercode:', cmd.fehlercodes[num])
 
         return num, result
+
+    def osci_ctrl_write(self, value):
+        return self.write(value, 'P-0-0028')
+
+    def osci_ctrl_read(self):
+        return self.read('P-0-0028')
+
+    def osci_status_read(self):
+        return self.read('P-0-0029')
+
+    def osci_time_resolution_read(self):
+        return self.read('P-0-0031')
+
+    def osci_time_resolution_write(self, v):
+        return self.write(v, 'P-0-0031')
+
+    def osci_mem_depth_read(self):
+        return self.read('P-0-0032')
+
+    def osci_mem_depth_write(self, v):
+        return self.write(v, 'P-0-0032')
+
+    def osci_signal_choice_list(self):
+        return self.read('P-0-0149')
+
+    def osci_num_valid_values(self):
+        return self.read('P-0-0150')
+
+    def osci_trg_mask_read(self):
+        return self.read('P-0-0025')
+
+    def osci_trg_mask_write(self, v):
+        return self.write(v, 'P-0-0025')
+
+    def osci_trg_signal_choice_read(self):
+        return self.read('P-0-0026')
+
+    def osci_trg_signal_choice_write(self, v):
+        return self.write(v, 'P-0-0026')
+
+    def osci_trg_threshold_read(self):
+        return self.read('P-0-0027')
+
+    def osci_trg_threshold_write(self, v):
+        return self.write(v, 'P-0-0027')
+
+    def osci_trg_slope_read(self):
+        return self.read('P-0-0030')
+
+    def osci_trg_slope_write(self, v):
+        return self.write(v, 'P-0-0030')
+
+    def osci_num_values_after_trg(self):
+        return self.read('P-0-0033')
+
+    def osci_ctrl_offset(self):
+        return self.read('P-0-0035')
+
+    def osci_external_trigger_read(self):
+        return self.read('P-0-0036')
+
+    def osci_external_trigger_write(self, v):
+        return self.write(v, 'P-0-0036')
+
+    def osci_internal_trigger_read(self):
+        return self.read('P-0-0037')
+
+    def osci_internal_trigger_write(self, v):
+        return self.write(v, 'P-0-0037')
+
