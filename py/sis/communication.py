@@ -182,11 +182,17 @@ class IndraDrive:
         return self.write(v, 'P-0-0037')
 
 
-    def read_list(self, type_, set_=None, number=None):
+    def read_list(self, type_, length=100, set_=None, number=None):
         if set_ is None or number is None:
             p_desc = cmd.type_set_number_from_string(type_)
 
-        b = cmd.read_list(*p_desc)
+        b = cmd.read_list(
+            p_desc[0],
+            p_desc[1],
+            p_desc[2],
+            0,
+            length
+        )
 
         self.serial.write(b)
         self.serial.flush()
