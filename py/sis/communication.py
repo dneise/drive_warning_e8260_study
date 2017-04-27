@@ -1,5 +1,6 @@
 import serial
 from . import make_command as cmd
+import time
 
 
 class IndraDrive:
