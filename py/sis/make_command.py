@@ -106,7 +106,7 @@ element_access_code = {
 simple_services = {
     name: dienst
     for (dienst, subdienst), name in dienste_und_subdienste.items()
-    if subdienst is None
+    if subdienst is None and dienst <= 0x80
 }
 
 
