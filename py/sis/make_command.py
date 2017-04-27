@@ -93,6 +93,38 @@ dienste_und_subdienste = {
     (0x8F, None): 'Parameter schreiben',
 }
 
+fehlercodes = {
+    4097: 'IDN nicht vorhanden',
+    4105: 'falscher Zugriff auf Element 1',
+    8193: 'Name nicht vorhanden',
+    8194: 'Name zu kurz übertragen',
+    8195: 'Name zu lang übertragen',
+    8196: 'Name nicht änderbar',
+    8197: 'Name zur Zeit schreibgeschützt',
+    12290: 'Attribut zu kurz übertragen',
+    12291: 'Attribut zu lang übertragen',
+    12292: 'Attribut nicht änderbar',
+    12293: 'Attribut zur Zeit schreibgeschützt',
+    16385: 'Einheit nicht vorhanden',
+    16386: 'Einheit zu kurz übertragen',
+    16387: 'Einheit zu lang übertragen',
+    16388: 'Einheit nicht änderbar',
+    16389: 'Einheit zur Zeit schreibgeschützt',
+    20481: 'minimaler Eingabewert nicht vorhanden',
+    20482: 'minimaler Eingabewert zu kurz übertragen',
+    20483: 'minimaler Eingabewert zu lang übertragen',
+    20484: 'minimaler Eingabewert nicht änderbar',
+    20485: 'minimaler Eingabewert zur Zeit schreibgeschützt',
+    24577: 'maximaler Eingabewert nicht vorhanden',
+    24578: 'Maximaler Eingabewert zu kurz übertragen',
+    24579: 'maximaler Eingabewert zu lang übertragen',
+    24580: 'maximaler Eingabewert nicht änderbar',
+    24581: 'maximaler Eingabewert zur Zeit schreibgeschützt',
+    28674: 'Datum zu kurz übertragen',
+    28675: 'Datum zu lang übertragen',
+    28676: 'Datum nicht änderbar',
+}
+
 element_access_code = {
     'channel not active': 0b000,
     'ident-number': 0b001,

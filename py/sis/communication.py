@@ -77,4 +77,14 @@ class IndraDrive:
         print('status:', cmd.get_status(result))
         print('service:', cmd.get_service(result))
 
+        L = len(result) - 11
+        if L == 2:
+            num = struct.unpack('<h', result[11:])[0]
+        elif L == 4:
+            num = struct.unpack('<i', result[11:])[0]
+        else:
+            num = None
+        if num in cmd.fehlercodes:
+            print('fehlercode:', cmd.fehlercodes[num])
+
         return result
