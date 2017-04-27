@@ -87,4 +87,4 @@ class IndraDrive:
         if num in cmd.fehlercodes:
             print('fehlercode:', cmd.fehlercodes[num])
 
-        return result
+        return num, result
