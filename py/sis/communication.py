@@ -200,4 +200,7 @@ class IndraDrive:
         time.sleep(2)
         result = self.serial.read(self.serial.inWaiting())
 
+        cmd.check_response(result)
+        print('status:', cmd.get_status(result))
+        print('service:', cmd.get_service(result))
         return result
