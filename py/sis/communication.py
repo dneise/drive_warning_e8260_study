@@ -151,6 +151,23 @@ class IndraDrive:
         else:
             return self.write(v, 'P-0-0037', size=2)
 
+    def get_osci(self):
+        print('ctrl', self.osci_ctrl()[0])
+        print('status', hex(self.osci_status()[0]))
+        print('time_resolution', self.osci_time_resolution()[0])
+        print('mem_depth', self.osci_mem_depth()[0])
+        print('num_valid_values', self.osci_num_valid_values()[0])
+        print('trigger')
+        print('    mask', self.osci_trg_mask()[0])
+        print('    signal_choice', hex(self.osci_trg_signal_choice()[0]))
+        print('    threshold', self.osci_trg_threshold()[0])
+        print('    slope', self.osci_trg_slope()[0])
+        print('    num_values_after_trg', self.osci_num_values_after_trg()[0])
+        print('    ctrl_offset', self.osci_trg_ctrl_offset()[0])
+        print('    ext trg', self.osci_external_trigger()[0])
+        print('    int trg', self.osci_internal_trigger()[0])
+
+
     def read_list(self, type_, length=100, set_=None, number=None):
         if set_ is None or number is None:
             p_desc = cmd.type_set_number_from_string(type_)
