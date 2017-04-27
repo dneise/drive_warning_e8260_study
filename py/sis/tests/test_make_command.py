@@ -30,11 +30,13 @@ def test_parameter_request_with_known_working_example():
 
         return b
 
+    from sis.make_command import read, S, P
     assert read_wichtungsart_speed() == read(S, 0, 44)
 
 
 def test_type_set_number_from_string():
 
+    from sis.make_command import type_set_number_from_string, S, P
     t, s, n = type_set_number_from_string('S-0-0044')
     assert t == S
     assert s == 0
@@ -49,7 +51,7 @@ def test_type_set_number_from_string():
     N = 1000000
     runtime = timeit.timeit(
         'type_set_number_from_string("P-0-0434")',
-        globals=globals(),
+        globals=locals(),
         number=N
     )
     assert runtime/N < 10e-6  # should be quicker than 10us on this platform.
