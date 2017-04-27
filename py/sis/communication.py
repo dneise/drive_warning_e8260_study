@@ -46,4 +46,8 @@ class IndraDrive:
     def read(self, type_, set_=None, number=None):
         result = self.raw_read(type_, set_, number)
 
-        assert sum(result) % 256 == 0  # checksum
+        cmd.check_response(result)
+        print('status:', cmd.get_status(result))
+        print('service:', cmd.get_service(result))
+
+

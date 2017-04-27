@@ -2,6 +2,7 @@ import struct
 
 S = 0
 P = 1
+STX = 0x02
 type_map = {
     'S': S,
     'P': P,
@@ -127,7 +128,7 @@ def telegram_header_static(
     service_name='Parameter lesen'
         ):
     return bytearray([
-        0x02,   # STX constant 0x02
+        STX,
         0x00,   # checksum, to be filled later
         0x00,   # length, to be filled later
         0x00,   # length repetition
@@ -211,3 +212,28 @@ def read(type_, set_, number):
     b = fill_checksum_into_static_telegram_header(b)
 
     return b
+
+
+def check_response(r):
+    # example b'\x022\x05\x05\x10\x10\x80d\x00<\x80\x02\x00'
+    assert sum(r) % 256 == 0
+    assert r[0] == STX
+    assert len(r) - 8 == r[2]
+    assert len(r) - 8 == r[3]
+    assert r[4] == make_telegram_head_ctrl_byte(
+        number_of_dynamic_subadresses=0,
+        has_paket_number=False,
+        is_reaction_telegram=True)
+    assert r[5] in simple_services.values()
+    assert r[6] == 128  # receiver address
+    assert r[7] == 100  # master address
+    assert r[8] in status_byte_meaning
+    assert r[10] == 128
+
+
+def get_status(r):
+    return status_byte_meaning[r[8]]
+
+
+def get_service(r):
+    return dienste_und_subdienste[(r[5], None)]
