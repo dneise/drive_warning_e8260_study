@@ -83,7 +83,7 @@ class IndraDrive:
         return num, result
 
     def osci_ctrl(self, v=None):
-        if value is None:
+        if v is None:
             return self.read('P-0-0028')
         else:
             return self.write(v, 'P-0-0028')
