@@ -50,4 +50,4 @@ class IndraDrive:
         print('status:', cmd.get_status(result))
         print('service:', cmd.get_service(result))
 
-
+        return result
