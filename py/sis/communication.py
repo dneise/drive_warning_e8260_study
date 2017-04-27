@@ -19,7 +19,6 @@ class IndraDrive:
 
         inst = cls()
         inst.serial = serial.Serial(*args, **kwargs)
-        inst.serial.open()
         return inst
 
     def raw_read(self, type_, set_=None, number=None):
