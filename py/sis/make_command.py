@@ -192,13 +192,14 @@ def read(type_, set_, number):
     sender_address = 100
     receiver_address = 128
 
-    static_header = telegram_header_static(
+    b = bytearray()
+    b += telegram_header_static(
         sender_address=sender_address,
         receiver_address=receiver_address,
         service_name='Parameter lesen',
     )
 
-    payload_head = payload_head(
+    b += payload_head(
         type_=type_,
         set_=set_,
         number=number,
@@ -206,9 +207,6 @@ def read(type_, set_, number):
         eac='value',
     )
 
-    payload = bytearray([])
-
-    b = static_header + payload_head + payload
     b = fill_length_into_static_telegram_header(b)
     b = fill_checksum_into_static_telegram_header(b)
 
