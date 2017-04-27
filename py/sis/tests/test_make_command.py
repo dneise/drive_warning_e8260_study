@@ -51,7 +51,7 @@ def test_type_set_number_from_string():
     N = 1000000
     runtime = timeit.timeit(
         'type_set_number_from_string("P-0-0434")',
-        globals=locals(),
+        setup='from sis.make_command import type_set_number_from_string',
         number=N
     )
     assert runtime/N < 10e-6  # should be quicker than 10us on this platform.
