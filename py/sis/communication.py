@@ -1,6 +1,7 @@
 import serial
 from . import make_command as cmd
 import time
+import struct
 
 
 class IndraDrive:
@@ -50,4 +51,12 @@ class IndraDrive:
         print('status:', cmd.get_status(result))
         print('service:', cmd.get_service(result))
 
-        return result
+        L = len(result) - 11
+        if L == 2:
+            num = struct.unpack('<h', result[11:])[0]
+        elif L == 4:
+            num = struct.unpack('<i', result[11:])[0]
+        else:
+            num = None
+
+        return num, result
