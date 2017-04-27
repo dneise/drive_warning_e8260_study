@@ -48,10 +48,10 @@ def test_type_set_number_from_string():
     assert n == 434
 
     import timeit
-    N = 1000000
+    N = int(1e5)
     runtime = timeit.timeit(
         'type_set_number_from_string("P-0-0434")',
         setup='from sis.make_command import type_set_number_from_string',
         number=N
     )
-    assert runtime/N < 10e-6  # should be quicker than 10us on this platform.
+    assert runtime/N < 100e-6  # should be quicker than 100us on this platform.
