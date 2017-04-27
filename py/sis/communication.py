@@ -32,15 +32,8 @@ class IndraDrive:
         self.serial.write(b)
         self.serial.flush()
 
-        size_ = self.known_parameter_sizes.get(p_desc, None)
-        if size_ is not None:
-            result = self.serial.read(size_)
-            if len(result) != size_:
-                raise TimeoutError
-        else:
-            time.sleep(2)
-            result = self.serial.read(self.serial.inWaiting())
-            self.known_parameter_sizes[p_desc] = len(result)
+        time.sleep(0.5)
+        result = self.serial.read(self.serial.inWaiting())
 
         return result
 
@@ -89,98 +82,74 @@ class IndraDrive:
 
         return num, result
 
-    @property
-    def osci_ctrl(self):
-        return self.read('P-0-0028')
+    def osci_ctrl(self, v=None):
+        if value is None:
+            return self.read('P-0-0028')
+        else:
+            return self.write(v, 'P-0-0028')
 
-    @osci_ctrl.setter
-    def osci_ctrl(self, v):
-        return self.write(v, 'P-0-0028')
-
-    @property
     def osci_status(self):
         return self.read('P-0-0029')
 
-    @property
-    def osci_time_resolution(self):
-        return self.read('P-0-0031')
+    def osci_time_resolution(self, v=None):
+        if v is None:
+            return self.read('P-0-0031')
+        else:
+            return self.write(v, 'P-0-0031', size=4)
 
-    @osci_time_resolution.setter
-    def osci_time_resolution(self, v):
-        return self.write(v, 'P-0-0031')
+    def osci_mem_depth(self, v=None):
+        if v is None:
+            return self.read('P-0-0032')
+        else:
+            return self.write(v, 'P-0-032', size=4)
 
-    @property
-    def osci_mem_depth(self):
-        return self.read('P-0-0032')
-
-    @osci_mem_depth.setter
-    def osci_mem_depth(self, v):
-        return self.write(v, 'P-0-0032')
-
-    @property
     def osci_signal_choice_list(self):
         return self.read('P-0-0149')
 
-    @property
     def osci_num_valid_values(self):
         return self.read('P-0-0150')
 
-    @property
-    def osci_trg_mask(self):
-        return self.read('P-0-0025')
+    def osci_trg_mask(self, v=None):
+        if v is None:
+            return self.read('P-0-0025')
+        else:
+            return self.write(v, 'P-0-0025', size=4)
 
-    @osci_trg_mask.setter
-    def osci_trg_mask(self, v):
-        return self.write(v, 'P-0-0025')
+    def osci_trg_signal_choice(self, v=None):
+        if v is None:
+            return self.read('P-0-0026')
+        else:
+            return self.write(v, 'P-0-0026', size=4)
 
-    @property
-    def osci_trg_signal_choice(self):
-        return self.read('P-0-0026')
+    def osci_trg_threshold(self, v=None):
+        if v is None:
+            return self.read('P-0-0027')
+        else:
+            return self.write(v, 'P-0-0027', size=4)
 
-    @osci_trg_signal_choice.setter
-    def osci_trg_signal_choice(self, v):
-        return self.write(v, 'P-0-0026')
+    def osci_trg_slope(self, v=None):
+        if v is None:
+            return self.read('P-0-0030')
+        else:
+            return self.write(v, 'P-0-0030', size=2)
 
-    @property
-    def osci_trg_threshold(self):
-        return self.read('P-0-0027')
-
-    @osci_trg_threshold.setter
-    def osci_trg_threshold(self, v):
-        return self.write(v, 'P-0-0027')
-
-    @property
-    def osci_trg_slope(self):
-        return self.read('P-0-0030')
-
-    @osci_trg_slope.setter
-    def osci_trg_slope(self, v):
-        return self.write(v, 'P-0-0030')
-
-    @property
     def osci_num_values_after_trg(self):
         return self.read('P-0-0033')
 
-    @property
     def osci_trg_ctrl_offset(self):
         return self.read('P-0-0035')
 
-    @property
-    def osci_external_trigger(self):
-        return self.read('P-0-0036')
+    def osci_external_trigger(self, v=None):
+        if v is None:
+            return self.read('P-0-0036')
+        else:
+            return self.write(v, 'P-0-0036', size=2)
 
-    @osci_external_trigger.setter
-    def osci_external_trigger(self, v):
-        return self.write(v, 'P-0-0036')
-
-    @property
-    def osci_internal_trigger(self):
-        return self.read('P-0-0037')
-
-    @osci_internal_trigger.setter
-    def osci_internal_trigger(self, v):
-        return self.write(v, 'P-0-0037')
-
+    def osci_internal_trigger(self, v=None):
+        if v is None:
+            return self.read('P-0-0037')
+        else:
+            return self.write(v, 'P-0-0037', size=2)
 
     def read_list(self, type_, length=100, set_=None, number=None):
         if set_ is None or number is None:
@@ -201,6 +170,6 @@ class IndraDrive:
         result = self.serial.read(self.serial.inWaiting())
 
         cmd.check_response(result)
-        print('status:', cmd.get_status(result))
+        print('status:', cmd.get_status(resulazt))
         print('service:', cmd.get_service(result))
         return result
