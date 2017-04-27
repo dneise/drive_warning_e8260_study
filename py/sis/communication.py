@@ -1,5 +1,5 @@
 import serial
-import make_command as cmd
+from . import make_command as cmd
 
 
 class IndraDrive:

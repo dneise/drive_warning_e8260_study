@@ -5,7 +5,7 @@ from pprint import pprint
 from datetime import datetime, timedelta
 import numpy as np
 from tqdm import tqdm
-import make_command as cmd
+from . import make_command as cmd
 
 
 def make_ser():
@@ -90,4 +90,3 @@ if __name__ == "__main__":
             readout_forever()
         except TimeoutError:
             time.sleep(10)
-
