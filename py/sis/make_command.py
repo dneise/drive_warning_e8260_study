@@ -286,7 +286,6 @@ def read_list(type_, set_, number, offset, length):
     return b
 
 
-
 def write(type_, set_, number, value, size=2):
     sender_address = 100
     receiver_address = 128
