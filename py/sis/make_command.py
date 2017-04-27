@@ -123,6 +123,18 @@ fehlercodes = {
     28674: 'Datum zu kurz übertragen',
     28675: 'Datum zu lang übertragen',
     28676: 'Datum nicht änderbar',
+    28677: 'Datum zur Zeit schreibgeschützt (Grund: Kommunikationsphase oder Modus)',
+    28678: 'Datum kleiner als min. Eingabewert',
+    28679: 'Datum größer als max. Eingabewert',
+    28680: 'Datum nicht korrekt (z. B. nicht unterstütze IDN, ungültige Bitnummer, ungültige Bit‐kombination, ungültige Listenlänge)',
+    28681: 'Datum passwortgeschützt',
+    28682: 'Datum zur Zeit schreibgeschützt, da es zyklisch konfiguriert ist (IDN ist im MDT bzw.AT konfiguriert, deshalb Schreiben über Servicekanal nicht erlaubt)',
+    28683: 'Ungültiges Listenelement (IDN wird nicht unterstützt, Wert außerhalb der Eingabe‐grenzen)',
+    28684: 'Datum zurzeit schreibgeschützt aufgrund anderer Einstellungen (z. B. Parameter,Betriebsart, Antriebsfreigabe, Antrieb EIN usw.)',
+    28688: 'Kommando bereits aktiv',
+    28689: 'Kommando nicht unterbrechbar',
+    28690: 'Kommando zur Zeit nicht ausführbar (z. B. Kommando in dieser Phase nicht aktivierbar',
+    28691: 'Kommando nicht ausführbar (ungültige oder falsche Parameter)',
 }
 
 element_access_code = {
