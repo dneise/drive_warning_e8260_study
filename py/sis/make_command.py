@@ -330,7 +330,6 @@ def check_response(r):
     assert r[6] == 128  # receiver address
     assert r[7] == 100  # master address
     assert r[8] in status_byte_meaning
-    assert r[10] == 128
 
 
 def get_status(r):
