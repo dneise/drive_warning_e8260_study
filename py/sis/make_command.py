@@ -222,7 +222,7 @@ def write(type_, set_, number, value, size=2):
     b += telegram_header_static(
         sender_address=sender_address,
         receiver_address=receiver_address,
-        service_name='Parameter lesen',
+        service_name='Parameter schreiben',
     )
 
     b += payload_head(
