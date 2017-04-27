@@ -277,7 +277,8 @@ def read_list(type_, set_, number, offset, length):
         eac='value',
     )
 
-    b += bytearray([offset, length])
+    b += bytearray(struct.pack('<h', offset))
+    b += bytearray(struct.pack('<h', length))
 
     b = fill_length_into_static_telegram_header(b)
     b = fill_checksum_into_static_telegram_header(b)
