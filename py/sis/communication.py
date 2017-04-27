@@ -89,72 +89,95 @@ class IndraDrive:
 
         return num, result
 
-    def osci_ctrl_write(self, value):
-        return self.write(value, 'P-0-0028')
-
-    def osci_ctrl_read(self):
+    @property
+    def osci_ctrl(self):
         return self.read('P-0-0028')
 
-    def osci_status_read(self):
+    @osci_ctrl.setter
+    def osci_ctrl(self, v):
+        return self.write(v, 'P-0-0028')
+
+    @property
+    def osci_status(self):
         return self.read('P-0-0029')
 
-    def osci_time_resolution_read(self):
+    @property
+    def osci_time_resolution(self):
         return self.read('P-0-0031')
 
-    def osci_time_resolution_write(self, v):
+    @osci_time_resolution.setter
+    def osci_time_resolution(self, v):
         return self.write(v, 'P-0-0031')
 
-    def osci_mem_depth_read(self):
+    @property
+    def osci_mem_depth(self):
         return self.read('P-0-0032')
 
-    def osci_mem_depth_write(self, v):
+    @osci_mem_depth.setter
+    def osci_mem_depth(self, v):
         return self.write(v, 'P-0-0032')
 
+    @property
     def osci_signal_choice_list(self):
         return self.read('P-0-0149')
 
+    @property
     def osci_num_valid_values(self):
         return self.read('P-0-0150')
 
-    def osci_trg_mask_read(self):
+    @property
+    def osci_trg_mask(self):
         return self.read('P-0-0025')
 
-    def osci_trg_mask_write(self, v):
+    @osci_trg_mask.setter
+    def osci_trg_mask(self, v):
         return self.write(v, 'P-0-0025')
 
-    def osci_trg_signal_choice_read(self):
+    @property
+    def osci_trg_signal_choice(self):
         return self.read('P-0-0026')
 
-    def osci_trg_signal_choice_write(self, v):
+    @osci_trg_signal_choice.setter
+    def osci_trg_signal_choice(self, v):
         return self.write(v, 'P-0-0026')
 
-    def osci_trg_threshold_read(self):
+    @property
+    def osci_trg_threshold(self):
         return self.read('P-0-0027')
 
-    def osci_trg_threshold_write(self, v):
+    @osci_trg_threshold.setter
+    def osci_trg_threshold(self, v):
         return self.write(v, 'P-0-0027')
 
-    def osci_trg_slope_read(self):
+    @property
+    def osci_trg_slope(self):
         return self.read('P-0-0030')
 
-    def osci_trg_slope_write(self, v):
+    @osci_trg_slope.setter
+    def osci_trg_slope(self, v):
         return self.write(v, 'P-0-0030')
 
+    @property
     def osci_num_values_after_trg(self):
         return self.read('P-0-0033')
 
-    def osci_ctrl_offset(self):
+    @property
+    def osci_trg_ctrl_offset(self):
         return self.read('P-0-0035')
 
-    def osci_external_trigger_read(self):
+    @property
+    def osci_external_trigger(self):
         return self.read('P-0-0036')
 
-    def osci_external_trigger_write(self, v):
+    @osci_external_trigger.setter
+    def osci_external_trigger(self, v):
         return self.write(v, 'P-0-0036')
 
-    def osci_internal_trigger_read(self):
+    @property
+    def osci_internal_trigger(self):
         return self.read('P-0-0037')
 
-    def osci_internal_trigger_write(self, v):
+    @osci_internal_trigger.setter
+    def osci_internal_trigger(self, v):
         return self.write(v, 'P-0-0037')
 
