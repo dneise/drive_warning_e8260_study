@@ -37,6 +37,18 @@ class IndraDrive:
 
         return result
 
+    def cancel_tranfer(self):
+        b = cmd.cancel_tranfer()
+
+        self.serial.write(b)
+        self.serial.flush()
+
+        time.sleep(0.5)
+        result = self.serial.read(self.serial.inWaiting())
+
+        return result
+
+
     def read(self, type_, set_=None, number=None):
         result = self.raw_read(type_, set_, number)
 
@@ -101,7 +113,7 @@ class IndraDrive:
         if v is None:
             return self.read('P-0-0032')
         else:
-            return self.write(v, 'P-0-032', size=4)
+            return self.write(v, 'P-0-032', size=2)
 
     def osci_signal_choice_list(self):
         return self.read('P-0-0149')

@@ -258,6 +258,23 @@ def read(type_, set_, number):
     return b
 
 
+def cancel_tranfer():
+    sender_address = 100
+    receiver_address = 128
+
+    b = bytearray()
+    b += telegram_header_static(
+        sender_address=sender_address,
+        receiver_address=receiver_address,
+        service_name='Abbruch der Datenübertragung',
+    )
+
+    b = fill_length_into_static_telegram_header(b)
+    b = fill_checksum_into_static_telegram_header(b)
+
+    return b
+
+
 def read_list(type_, set_, number, offset, length):
     sender_address = 100
     receiver_address = 128
