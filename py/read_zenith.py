@@ -58,22 +58,10 @@ def make_ser():
 
 d = {
     "Lage Istwert Geber 1": (S, 0, 51, 15, 1, '<i'),
-    "Lage Istwert Geber 2": (S, 0, 53, 15, 1, '<i'),
     "Lage Sollwert": (S, 0, 47, 15, 1, '<i'),
-
     "Geschwindigkeits-Istwert": (S, 0, 40, 15, 1, '<i'),
-    "Geschwindigkeits-Sollwert": (S, 0, 36, 15, 1, '<i'),
-    "Geschwindigkeits-Sollwert additiv": (S, 0, 37, 15, 1, '<i'),
-
-    "Drehmoment Sollwert": (S, 0, 80, 13, 1, '<h'),
-    "Drehmoment Sollwert additiv": (S, 0, 81, 13, 1, '<h'),
     "Drehmoment Istwert": (S, 0, 84, 13, 1, '<h'),
-
-    "Motor Temperatur": (S, 0, 383, 13, 1, '<h'),
-    "Verstärker Temperatur": (S, 0, 384, 13, 1, '<h'),
-
     "Beschleunigungsistwert 1": (S, 0, 164, 15, 1e-6, '<i'),
-    # "Beschleunigungsistwert 2": (S, 0, 195, 15, 1e-6, '<i'),  # no clue what this is
 }
 
 a = np.zeros(len(d)+1, dtype=np.float64)
