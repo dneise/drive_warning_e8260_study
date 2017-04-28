@@ -1,8 +1,11 @@
 import struct
 
+S = 0
+P = 1
+
 
 class IDN:
-    SP2int = {'S': 0, 'P': 1}
+    SP2int = {'S': S, 'P': P}
     int2SP = {v: k for k, v in SP2int.items()}
 
     def __init__(self, type_, set_, number):

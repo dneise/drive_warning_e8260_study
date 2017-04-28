@@ -1,3 +1,6 @@
+from sis.make_command import TelegramFactory, IDN
+
+
 def test_parameter_request_with_known_working_example():
 
     def read_wichtungsart_speed():
@@ -30,28 +33,6 @@ def test_parameter_request_with_known_working_example():
 
         return b
 
-    from sis.make_command import read, S, P
-    assert read_wichtungsart_speed() == read(S, 0, 44)
+    tf = TelegramFactory()
+    assert read_wichtungsart_speed() == tf.read(IDN.from_string('S-0-0044'))
 
-
-def test_type_set_number_from_string():
-
-    from sis.make_command import type_set_number_from_string, S, P
-    t, s, n = type_set_number_from_string('S-0-0044')
-    assert t == S
-    assert s == 0
-    assert n == 44
-
-    t, s, n = type_set_number_from_string('P-0-0434')
-    assert t == P
-    assert s == 0
-    assert n == 434
-
-    import timeit
-    N = int(1e5)
-    runtime = timeit.timeit(
-        'type_set_number_from_string("P-0-0434")',
-        setup='from sis.make_command import type_set_number_from_string',
-        number=N
-    )
-    assert runtime/N < 100e-6  # should be quicker than 100us on this platform.

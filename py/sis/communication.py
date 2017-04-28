@@ -1,7 +1,11 @@
 import serial
 from . import make_command as cmd
+from .response import Response
 import time
 import struct
+
+tf = cmd.TelegramFactory()
+IDN = cmd.IDN.from_string
 
 
 class IndraDrive:
@@ -23,179 +27,79 @@ class IndraDrive:
         inst.serial = serial.Serial(*args, **kwargs)
         return inst
 
-    def raw_read(self, type_, set_=None, number=None):
-        if set_ is None or number is None:
-            p_desc = cmd.type_set_number_from_string(type_)
-
-        b = cmd.read(*p_desc)
-
-        self.serial.write(b)
+    def _receive(self):
         self.serial.flush()
+        result = self.serial.read(4)
+        length = b[2]
+        assert b[2] == b[3]
+        result += self.serial.read(length+4)
 
-        time.sleep(0.5)
-        result = self.serial.read(self.serial.inWaiting())
+        return Result(result)
 
-        return result
+    def read(self, idnstr):
+        self.serial.write(tf.read(IDN(idnstr)))
+        return self._receive()
 
     def cancel_tranfer(self):
-        b = cmd.cancel_tranfer()
+        self.serial.write(tf.cancel_tranfer())
+        return self._receive()
 
-        self.serial.write(b)
-        self.serial.flush()
+    def read_list(self, idnstr, length, offset=0):
+        self.serial.write(tf.read_list(IDN(idnstr), offset, length))
+        return self._receive()
 
-        time.sleep(0.5)
-        result = self.serial.read(self.serial.inWaiting())
+    def write(self, idnstr, value, size=2):
+        self.serial.write(tf.write(IDN(idnstr), value, size))
+        return self._receive()
 
-        return result
-
-
-    def read(self, type_, set_=None, number=None):
-        result = self.raw_read(type_, set_, number)
-
-        cmd.check_response(result)
-        #print('status:', cmd.get_status(result))
-        #print('service:', cmd.get_service(result))
-
-        L = len(result) - 11
-        if L == 2:
-            num = struct.unpack('<h', result[11:])[0]
-        elif L == 4:
-            num = struct.unpack('<i', result[11:])[0]
+    def rw(self, idnstr, value=None, size=2):
+        if value is None:
+            return self.read(idnstr)
         else:
-            num = None
-
-        return num, result
-
-    def write(self, value, type_, set_=None, number=None, size=2):
-        if set_ is None or number is None:
-            type_, set_, number = cmd.type_set_number_from_string(type_)
-
-        b = cmd.write(type_, set_, number, value, size)
-
-        self.serial.write(b)
-        self.serial.flush()
-
-        time.sleep(1)
-        result = self.serial.read(self.serial.inWaiting())
-
-        cmd.check_response(result)
-        print('status:', cmd.get_status(result))
-        print('service:', cmd.get_service(result))
-
-        L = len(result) - 11
-        if L == 2:
-            num = struct.unpack('<h', result[11:])[0]
-        elif L == 4:
-            num = struct.unpack('<i', result[11:])[0]
-        else:
-            num = None
-        if num in cmd.fehlercodes:
-            print('fehlercode:', cmd.fehlercodes[num])
-
-        return num, result
+            return self.write(idnstr, value, size)
 
     def osci_ctrl(self, v=None):
-        if v is None:
-            return self.read('P-0-0028')
-        else:
-            return self.write(v, 'P-0-0028')
+        return self.rw('P-0-0025', v, 4)
+    def osci_trg_signal_choice(self, v=None):
+        return self.rw('P-0-0026', v, 4)
+    def osci_trg_threshold(self, v=None):
+        return self.rw('P-0-0027', v, 4)
+    def osci_ctrl(self, v=None):
+        return self.rw('P-0-0028', v, 2)
+    def osci_trg_slope(self, v=None):
+        return self.rw('P-0-0030', v, 2)
+    def osci_time_resolution(self, v=None):
+        return self.rw('P-0-0031', v, 4)
+    def osci_mem_depth(self, v=None):
+        return self.rw('P-0-0032', v, 2)
+    def osci_external_trigger(self, v=None):
+        return self.rw('P-0-0036', v, 2)
+    def osci_internal_trigger(self, v=None):
+        return self.rw('P-0-0037', v, 2)
 
     def osci_status(self):
-        return self.read('P-0-0029')
-
-    def osci_time_resolution(self, v=None):
-        if v is None:
-            return self.read('P-0-0031')
-        else:
-            return self.write(v, 'P-0-0031', size=4)
-
-    def osci_mem_depth(self, v=None):
-        if v is None:
-            return self.read('P-0-0032')
-        else:
-            return self.write(v, 'P-0-032', size=2)
-
-    def osci_signal_choice_list(self):
-        return self.read('P-0-0149')
-
-    def osci_num_valid_values(self):
-        return self.read('P-0-0150')
-
-    def osci_trg_mask(self, v=None):
-        if v is None:
-            return self.read('P-0-0025')
-        else:
-            return self.write(v, 'P-0-0025', size=4)
-
-    def osci_trg_signal_choice(self, v=None):
-        if v is None:
-            return self.read('P-0-0026')
-        else:
-            return self.write(v, 'P-0-0026', size=4)
-
-    def osci_trg_threshold(self, v=None):
-        if v is None:
-            return self.read('P-0-0027')
-        else:
-            return self.write(v, 'P-0-0027', size=4)
-
-    def osci_trg_slope(self, v=None):
-        if v is None:
-            return self.read('P-0-0030')
-        else:
-            return self.write(v, 'P-0-0030', size=2)
-
+        return self.rw('P-0-0029')
     def osci_num_values_after_trg(self):
-        return self.read('P-0-0033')
-
+        return self.rw('P-0-0033')
     def osci_trg_ctrl_offset(self):
-        return self.read('P-0-0035')
-
-    def osci_external_trigger(self, v=None):
-        if v is None:
-            return self.read('P-0-0036')
-        else:
-            return self.write(v, 'P-0-0036', size=2)
-
-    def osci_internal_trigger(self, v=None):
-        if v is None:
-            return self.read('P-0-0037')
-        else:
-            return self.write(v, 'P-0-0037', size=2)
+        return self.rw('P-0-0035')
+    def osci_signal_choice_list(self):
+        return self.rw('P-0-0149')
+    def osci_num_valid_values(self):
+        return self.rw('P-0-0150')
 
     def get_osci(self):
-        print('ctrl', self.osci_ctrl()[0])
-        print('status', hex(self.osci_status()[0]))
-        print('time_resolution', self.osci_time_resolution()[0])
-        print('mem_depth', self.osci_mem_depth()[0])
-        print('num_valid_values', self.osci_num_valid_values()[0])
+        print('ctrl', self.osci_ctrl().value)
+        print('status', hex(self.osci_status().value))
+        print('time_resolution', self.osci_time_resolution().value)
+        print('mem_depth', self.osci_mem_depth().value)
+        print('num_valid_values', self.osci_num_valid_values().value)
         print('trigger')
-        print('    mask', self.osci_trg_mask()[0])
-        print('    signal_choice', hex(self.osci_trg_signal_choice()[0]))
-        print('    threshold', self.osci_trg_threshold()[0])
-        print('    slope', self.osci_trg_slope()[0])
-        print('    num_values_after_trg', self.osci_num_values_after_trg()[0])
-        print('    ctrl_offset', self.osci_trg_ctrl_offset()[0])
-        print('    ext trg', self.osci_external_trigger()[0])
-        print('    int trg', self.osci_internal_trigger()[0])
-
-
-    def read_list(self, type_, length=100, set_=None, number=None):
-        if set_ is None or number is None:
-            p_desc = cmd.type_set_number_from_string(type_)
-
-        b = cmd.read_list(
-            p_desc[0],
-            p_desc[1],
-            p_desc[2],
-            0,
-            length
-        )
-
-        self.serial.write(b)
-        self.serial.flush()
-
-        time.sleep(2)
-        result = self.serial.read(self.serial.inWaiting())
-
-        return result
+        print('    mask', self.osci_trg_mask().value)
+        print('    signal_choice', hex(self.osci_trg_signal_choice().value))
+        print('    threshold', self.osci_trg_threshold().value)
+        print('    slope', self.osci_trg_slope().value)
+        print('    num_values_after_trg', self.osci_num_values_after_trg().value)
+        print('    ctrl_offset', self.osci_trg_ctrl_offset().value)
+        print('    ext trg', self.osci_external_trigger().value)
+        print('    int trg', self.osci_internal_trigger().value)
