@@ -22,6 +22,20 @@ class Response:
             has_paket_number=False,
             is_reaction_telegram=True)
         '''
+    def __repr__(self):
+
+        s = "{cn}(value={v}".format(
+                cn=self.__class__.__name__,
+                v=self.value,
+            )
+        if not self.checksum_ok:
+            s += ",\n checksum=False"
+
+        if not self.r[8] == 0:
+            s += ",\n status=" + self.status_string
+
+        s += ")"
+        return s
 
     @property
     def status_string(self):
@@ -41,8 +55,8 @@ class Response:
         buf = self.r[11:]
 
         if self.wordsize == 2:
-            return list(struct.iter_unpack('<h', buf))
+            return [x[0] for x in struct.iter_unpack('<h', buf)]
         elif self.wordsize == 4:
-            return list(struct.iter_unpack('<i', buf))
+            return [x[0] for x in struct.iter_unpack('<i', buf)]
         else:
             return buf
