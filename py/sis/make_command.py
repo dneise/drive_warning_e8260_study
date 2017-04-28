@@ -77,7 +77,7 @@ class TelegramFactory:
 
         return b
 
-    def attribute(self. idn):
+    def attribute(self, idn):
         b = self._telegram_header_static('Parameter lesen')
         b += self._payload_head(idn, Access.ATTRIBUTE)
 
