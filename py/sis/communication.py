@@ -40,8 +40,8 @@ class IndraDrive:
         self.serial.write(tf.read(IDN(idnstr)))
         return self._receive()
 
-    def attribure(self, idnstr):
-        self.serial.write(tf.attribure(IDN(idnstr)))
+    def attribute(self, idnstr):
+        self.serial.write(tf.attribute(IDN(idnstr)))
         return self._receive(wordsize=4)
 
     def cancel_tranfer(self):
