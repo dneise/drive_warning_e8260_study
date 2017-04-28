@@ -1,8 +1,6 @@
 import serial
 from . import make_command as cmd
 from .response import Response
-import time
-import struct
 
 tf = cmd.TelegramFactory()
 IDN = cmd.IDN.from_string
@@ -36,7 +34,7 @@ class IndraDrive:
         assert result[2] == result[3]
         result += self.serial.read(length+4)
 
-        return Result(result)
+        return Response(result)
 
     def read(self, idnstr):
         self.serial.write(tf.read(IDN(idnstr)))
@@ -60,7 +58,7 @@ class IndraDrive:
         else:
             return self.write(idnstr, value, size)
 
-    def osci_ctrl(self, v=None):
+    def osci_trg_mask(self, v=None):
         return self.rw('P-0-0025', v, 4)
     def osci_trg_signal_choice(self, v=None):
         return self.rw('P-0-0026', v, 4)
