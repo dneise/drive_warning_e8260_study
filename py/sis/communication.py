@@ -90,7 +90,7 @@ class IndraDrive:
 
     def get_osci(self):
         print('ctrl', self.osci_ctrl().value)
-        print('status', hex(self.osci_status().value))
+        print('status', self.osci_status().value)
         print('time_resolution', self.osci_time_resolution().value)
         print('mem_depth', self.osci_mem_depth().value)
         print('num_valid_values', self.osci_num_valid_values().value)
