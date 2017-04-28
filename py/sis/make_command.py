@@ -77,6 +77,15 @@ class TelegramFactory:
 
         return b
 
+    def attribute(self. idn):
+        b = self._telegram_header_static('Parameter lesen')
+        b += self._payload_head(idn, Access.ATTRIBUTE)
+
+        b = fill_length_into_static_telegram_header(b)
+        b = fill_checksum_into_static_telegram_header(b)
+
+        return b
+
     def write(self, idn, value, size=2):
         b = self._telegram_header_static('Parameter schreiben')
         b += self._payload_head(idn, Access.VALUE)

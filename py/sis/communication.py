@@ -25,7 +25,7 @@ class IndraDrive:
         inst.serial = serial.Serial(*args, **kwargs)
         return inst
 
-    def _receive(self):
+    def _receive(self, wordsize=2):
         self.serial.flush()
         result = self.serial.read(4)
         if len(result) < 4:
@@ -34,11 +34,15 @@ class IndraDrive:
         assert result[2] == result[3]
         result += self.serial.read(length+4)
 
-        return Response(result)
+        return Response(result, wordsize=wordsize)
 
     def read(self, idnstr):
         self.serial.write(tf.read(IDN(idnstr)))
         return self._receive()
+
+    def attribure(self, idnstr):
+        self.serial.write(tf.attribure(IDN(idnstr)))
+        return self._receive(wordsize=4)
 
     def cancel_tranfer(self):
         self.serial.write(tf.cancel_tranfer())
