@@ -30,6 +30,8 @@ class IndraDrive:
     def _receive(self):
         self.serial.flush()
         result = self.serial.read(4)
+        if len(result) < 4:
+            raise TimeoutError('Drive is probably off')
         length = result[2]
         assert result[2] == result[3]
         result += self.serial.read(length+4)
