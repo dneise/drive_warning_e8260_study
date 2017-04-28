@@ -96,7 +96,7 @@ class IndraDrive:
         print('num_valid_values', self.osci_num_valid_values().value)
         print('trigger')
         print('    mask', self.osci_trg_mask().value)
-        print('    signal_choice', hex(self.osci_trg_signal_choice().value))
+        print('    signal_choice', self.osci_trg_signal_choice().value)
         print('    threshold', self.osci_trg_threshold().value)
         print('    slope', self.osci_trg_slope().value)
         print('    num_values_after_trg', self.osci_num_values_after_trg().value)
