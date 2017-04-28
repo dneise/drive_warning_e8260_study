@@ -30,8 +30,8 @@ class IndraDrive:
     def _receive(self):
         self.serial.flush()
         result = self.serial.read(4)
-        length = b[2]
-        assert b[2] == b[3]
+        length = result[2]
+        assert result[2] == result[3]
         result += self.serial.read(length+4)
 
         return Result(result)
